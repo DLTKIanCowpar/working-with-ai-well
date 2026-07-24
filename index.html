@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Working with AI Well | P&T AI Adoption & Enablement</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --navy:#081581;
+    --navy-deep:#070D63;
+    --blue:#1742F6;
+    --lightblue:#3893FF;
+    --teal:#00B6C3;
+    --purple:#6D18F1;
+    --charcoal:#3C454E;
+    --paper:#F7F7F5;
+    --paper-dim:#EDEDE9;
+    --line:#DADAD4;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;color-scheme:light;background:var(--paper) !important;}
+  body{
+    margin:0;
+    font-family:'Figtree',system-ui,sans-serif;
+    background:var(--paper) !important;
+    color:var(--charcoal);
+    line-height:1.55;
+    color-scheme:light;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  a{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(23,66,246,0.3);}
+  a:hover{border-bottom-color:var(--blue);}
+
+  a:focus-visible, button:focus-visible, summary:focus-visible,
+  .nav-link:focus-visible, .filter-btn:focus-visible, .version-pill:focus-visible,
+  .path-card:focus-visible{
+    outline:2px solid var(--blue);outline-offset:2px;border-radius:4px;
+  }
+
+  /* ---------- SCROLL PROGRESS ---------- */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:3px;z-index:200;width:0%;
+    background:linear-gradient(90deg,var(--teal),var(--blue));
+    transition:width .08s linear;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:linear-gradient(155deg,var(--navy-deep) 0%,var(--navy) 55%,var(--blue) 130%);
+    color:#fff;
+    padding:44px 24px 96px;
+    position:relative;
+  }
+  .brand-row{
+    max-width:760px;margin:0 auto 40px;
+    display:flex;align-items:center;
+  }
+  .brand-row img{
+    height:26px;background:#fff;padding:7px 12px;border-radius:8px;
+  }
+  .hero-inner{max-width:760px;margin:0 auto;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal);display:inline-block;}
+  h1{
+    font-size:clamp(30px,4.4vw,44px);
+    font-weight:800;
+    line-height:1.15;
+    margin:0 0 22px;
+    letter-spacing:-0.01em;
+  }
+  .hero p{
+    font-size:17px;
+    color:rgba(255,255,255,0.86);
+    max-width:600px;
+    margin:0 0 14px;
+  }
+  .hero p:last-of-type{margin-bottom:0;}
+  .hero-cta{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;color:var(--navy-deep) !important;
+    font-weight:700;font-size:14.5px;
+    padding:12px 22px;border-radius:10px;
+    margin-top:28px;border-bottom:none !important;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,0.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px rgba(0,0,0,0.4);}
+
+  /* ---------- PATH FORK ---------- */
+  .path-fork{max-width:940px;margin:0 auto;padding:28px 24px 8px;}
+  .path-fork-inner{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:640px){.path-fork-inner{grid-template-columns:1fr;}}
+  .path-card{
+    display:block;background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;border-bottom:1px solid var(--line) !important;
+    box-shadow:0 1px 3px rgba(8,21,129,0.05);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .path-card:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:0 10px 24px -14px rgba(8,21,129,0.3);}
+  .path-label{display:block;font-weight:700;color:var(--navy-deep);font-size:15px;margin-bottom:4px;}
+  .path-eyebrow{
+    display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--teal);margin-bottom:6px;
+  }
+  .path-desc{display:block;font-size:13.5px;color:var(--charcoal);opacity:0.78;}
+
+  /* torn receipt edge */
+  .tear{
+    position:relative;
+    height:22px;
+    background:var(--paper);
+    margin-top:-1px;
+  }
+  .tear::before{
+    content:"";
+    position:absolute; top:-14px; left:0; right:0; height:20px;
+    background:linear-gradient(-45deg,var(--paper) 10px,transparent 0),
+               linear-gradient(45deg,var(--paper) 10px,transparent 0);
+    background-size:20px 20px;
+    background-position:left top;
+    background-repeat:repeat-x;
+  }
+
+  section{max-width:940px;margin:0 auto;padding:64px 24px;scroll-margin-top:64px;}
+
+  /* ---------- MINI NAV ---------- */
+  .mini-nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,247,245,0.92);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .mini-nav::before, .mini-nav::after{
+    content:"";position:absolute;top:0;bottom:0;width:26px;pointer-events:none;z-index:2;
+  }
+  .mini-nav::before{left:0;background:linear-gradient(to right, rgba(247,247,245,0.95), transparent);}
+  .mini-nav::after{right:0;background:linear-gradient(to left, rgba(247,247,245,0.95), transparent);}
+  .mini-nav-inner{
+    max-width:940px;margin:0 auto;
+    display:flex;gap:6px;
+    padding:10px 20px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .mini-nav-inner::-webkit-scrollbar{display:none;}
+  .nav-link{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:0.04em;
+    padding:7px 13px;border-radius:16px;
+    color:var(--charcoal);
+    border-bottom:none;
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:background .15s ease,color .15s ease;
+  }
+  .nav-link:hover{background:var(--paper-dim);}
+  .nav-link.active{background:var(--navy-deep);color:#fff;}
+  .section-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--purple);
+    margin-bottom:8px;
+  }
+  h2{font-size:26px;font-weight:700;color:var(--navy-deep);margin:0 0 10px;letter-spacing:-0.01em;}
+  .section-intro{max-width:640px;color:var(--charcoal);opacity:0.85;margin-bottom:34px;}
+
+  /* ---------- FILTER ---------- */
+  .filters{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
+  .filter-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:0.06em;
+    padding:8px 14px;border-radius:20px;
+    border:1.5px solid var(--line);
+    background:#fff;color:var(--charcoal);
+    cursor:pointer;transition:all .15s ease;
+  }
+  .filter-btn:hover{border-color:var(--blue);}
+  .filter-btn.active{background:var(--navy-deep);color:#fff;border-color:var(--navy-deep);}
+
+  /* ---------- QUICK HIT BUBBLES ---------- */
+  .bubble-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+  .bubble{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 20px 18px;
+    box-shadow:0 1px 3px rgba(8,21,129,0.05);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .bubble:hover{transform:translateY(-3px);box-shadow:0 10px 24px -12px rgba(8,21,129,0.25);}
+  .tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:0.08em;
+    padding:3px 9px;border-radius:6px;
+    color:#fff;margin-bottom:11px;
+  }
+  .tag.speed{background:var(--teal);}
+  .tag.flow{background:var(--blue);}
+  .tag.clarity{background:var(--purple);}
+  .tag.speed::before{content:"⚡ ";}
+  .tag.flow::before{content:"↻ ";}
+  .tag.clarity::before{content:"◎ ";}
+  .bubble h3{font-size:15.5px;font-weight:700;margin:0 0 6px;color:var(--navy-deep);}
+  .bubble p{font-size:13.8px;margin:0;color:var(--charcoal);opacity:0.88;}
+  .bubble[hidden]{display:none;}
+
+  /* ---------- NET POSITIVE / COMPARE ---------- */
+  .pair-title{font-weight:700;color:var(--navy-deep);font-size:14.5px;margin:28px 0 10px;}
+  .pair-title:first-of-type{margin-top:6px;}
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:640px){.compare-grid{grid-template-columns:1fr;}}
+  .compare-card{border-radius:14px;padding:18px 20px;border:1px solid var(--line);box-shadow:0 1px 3px rgba(8,21,129,0.05);}
+  .compare-card.vague{background:var(--paper-dim);}
+  .compare-card.specific{background:#fff;border-color:var(--teal);border-width:1.5px;}
+  .compare-label{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.08em;
+    text-transform:uppercase;margin-bottom:9px;display:block;
+  }
+  .compare-card.vague .compare-label{color:var(--charcoal);opacity:0.7;}
+  .compare-card.specific .compare-label{color:var(--teal);}
+  .compare-card p{margin:0;font-size:14px;font-style:italic;color:var(--charcoal);}
+  .stat-line{font-size:14.5px;opacity:0.85;margin-top:22px;}
+  .stat-line .mono{color:var(--purple);font-weight:700;font-style:normal;}
+  .net-takeaway{font-weight:700;color:var(--navy-deep);margin-top:18px;font-size:15.5px;}
+
+  /* ---------- GOOD / BETTER / BEST ---------- */
+  .task-block{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    margin-bottom:14px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(8,21,129,0.05);
+  }
+  .task-block summary{
+    padding:18px 22px;font-weight:700;color:var(--navy-deep);font-size:16px;
+    cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
+    gap:12px;
+  }
+  .task-block summary::-webkit-details-marker{display:none;}
+  .task-block summary::after{
+    content:"+";font-family:'JetBrains Mono',monospace;font-weight:400;
+    color:var(--charcoal);opacity:0.5;font-size:20px;flex-shrink:0;
+  }
+  .task-block[open] summary::after{content:"–";}
+  .task-body{padding:0 22px 22px;}
+  .tier-row{
+    border-left:4px solid var(--line);
+    background:var(--paper);
+    border-radius:0 10px 10px 0;
+    padding:14px 18px;
+    margin-bottom:10px;
+  }
+  .tier-row.better{border-left-color:var(--blue);}
+  .tier-row.best{border-left-color:var(--teal);}
+  .tier-label{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;
+    text-transform:uppercase;opacity:0.7;display:block;margin-bottom:6px;
+  }
+  .tier-row.better .tier-label{color:var(--blue);opacity:1;}
+  .tier-row.best .tier-label{color:var(--teal);opacity:1;}
+  .tier-row .prompt{font-style:italic;font-size:14.5px;margin:0 0 6px;color:var(--navy-deep);}
+  .tier-row .note{font-size:13px;margin:0;opacity:0.75;}
+  .token-math{
+    font-size:13.5px;background:var(--paper-dim);border-radius:10px;
+    padding:14px 16px;margin-top:4px;opacity:0.9;
+  }
+  .token-math strong{color:var(--purple);}
+  .gbb-flag{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    color:var(--charcoal);opacity:0.72;margin-top:6px;
+  }
+
+  /* ---------- FROM THE COMMUNITY ---------- */
+  .format-tag{
+    display:inline-block;font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+    padding:3px 9px;border-radius:6px;color:#fff;margin-bottom:8px;
+  }
+  .format-tag.watch{background:var(--purple);}
+  .format-tag.read{background:var(--blue);}
+  .format-tag.discuss{background:var(--teal);}
+  .format-tag.watch::before{content:"▶ ";}
+  .format-tag.read::before{content:"▤ ";}
+  .format-tag.discuss::before{content:"◆ ";}
+  .community-item{
+    display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+    padding:18px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;
+  }
+  .community-item:first-child{border-top:1px solid var(--line);}
+  .community-item .ci-main{flex:1;min-width:220px;}
+  .community-item h3{font-size:15px;font-weight:700;margin:0 0 4px;color:var(--navy-deep);}
+  .community-item .desc{font-size:13.5px;opacity:0.8;max-width:520px;}
+  .community-item .source{
+    font-family:'JetBrains Mono',monospace;font-size:11px;opacity:0.68;margin-top:4px;
+  }
+  .community-item a.go{font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap;flex-shrink:0;}
+
+  /* ---------- VERSION ENTRIES ---------- */
+  .version-entry{padding-top:14px;margin-top:14px;border-top:1px solid var(--line);}
+  .version-entry:first-child{border-top:none;margin-top:4px;padding-top:0;}
+  .version-entry-head{display:flex;align-items:center;gap:8px;margin-bottom:2px;}
+  .version-current-flag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.06em;
+    color:var(--teal);text-transform:uppercase;
+  }
+  .version-badge.dim{background:var(--paper-dim);color:var(--charcoal);opacity:0.8;}
+  .version-pill{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.05em;
+    background:rgba(255,255,255,0.15);color:#fff !important;
+    padding:4px 10px;border-radius:12px;margin-left:12px;
+    border:1px solid rgba(255,255,255,0.3);
+    display:inline-flex;align-items:center;gap:5px;
+    cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.3) !important;
+    transition:background .15s ease;
+  }
+  .version-pill:hover{background:rgba(255,255,255,0.28);}
+  .version-pill .chevron{font-size:9px;opacity:0.8;}
+  .version-footer{max-width:940px;margin:0 auto;padding:0 24px 8px;}
+  .release-accordion{border:1px solid var(--line);border-radius:12px;background:#fff;}
+  .release-accordion summary{
+    padding:14px 20px;cursor:pointer;list-style:none;
+    display:flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--charcoal);
+  }
+  .release-accordion summary::-webkit-details-marker{display:none;}
+  .release-accordion summary::after{content:"+";margin-left:auto;opacity:0.5;font-size:16px;}
+  .release-accordion[open] summary::after{content:"–";}
+  .version-badge{
+    background:var(--navy-deep);color:#fff;padding:3px 10px;border-radius:6px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.05em;
+  }
+  .release-body{padding:2px 20px 20px;font-size:13.5px;}
+  .release-body h4{
+    font-size:11.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(--purple);
+    margin:18px 0 7px;font-family:'JetBrains Mono',monospace;
+  }
+  .release-body h4:first-child{margin-top:4px;}
+  .release-body ul{margin:0 0 4px;padding-left:18px;}
+  .release-body li{margin-bottom:5px;opacity:0.85;line-height:1.5;}
+  .playbook-list{display:flex;flex-direction:column;gap:14px;}
+  .pb-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;display:flex;justify-content:space-between;gap:18px;align-items:flex-start;
+    flex-wrap:wrap;
+    box-shadow:0 1px 3px rgba(8,21,129,0.05);
+  }
+  .pb-main{flex:1;min-width:240px;}
+  .pb-main h3{font-size:16.5px;font-weight:700;color:var(--navy-deep);margin:0 0 6px;}
+  .pb-main p{margin:0;font-size:14.3px;opacity:0.87;}
+  .pb-main p code{
+    font-family:'JetBrains Mono',monospace;font-size:0.92em;
+    background:var(--paper-dim);padding:1px 6px;border-radius:4px;color:var(--navy-deep);
+  }
+  .pb-source{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--charcoal);
+    opacity:0.68;margin-top:8px;
+  }
+  .pb-link{
+    flex-shrink:0;
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;
+    padding:9px 16px;border-radius:8px;background:var(--navy-deep);color:#fff!important;
+    border-bottom:none!important;white-space:nowrap;
+  }
+  .pb-link:hover{background:var(--blue);}
+
+  /* ---------- DEEP DIVE ---------- */
+  .deep-list{display:flex;flex-direction:column;}
+  .deep-item{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    padding:16px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;
+  }
+  .deep-item:first-child{border-top:1px solid var(--line);}
+  .deep-item h3{font-size:15px;font-weight:700;margin:0;color:var(--navy-deep);}
+  .deep-item .desc{font-size:13.5px;opacity:0.75;margin-top:4px;max-width:520px;}
+  .deep-item a{font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap;}
+
+  /* ---------- SETUP ASIDE ---------- */
+  .setup-box{
+    border:1.5px dashed var(--line);
+    border-radius:14px;
+    padding:24px 26px;
+    background:#fff;
+    box-shadow:0 1px 3px rgba(8,21,129,0.04);
+  }
+  .setup-box .section-label{margin-bottom:6px;}
+  .setup-box p.lede{font-size:14px;opacity:0.78;margin:0 0 18px;max-width:600px;}
+  .setup-links{display:flex;flex-direction:column;gap:10px;}
+  .setup-links a{
+    font-size:14px;font-weight:600;color:var(--navy-deep);
+    border-bottom:1px solid var(--line);padding-bottom:2px;display:inline-block;
+  }
+  .setup-links a:hover{border-bottom-color:var(--navy-deep);}
+  .setup-links span{font-size:12.5px;opacity:0.7;display:block;margin-top:2px;font-weight:400;color:var(--charcoal);}
+
+  /* ---------- MODEL GUIDE ---------- */
+  .model-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-bottom:28px;}
+  .model-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:20px 20px 18px;border-left:4px solid var(--line);
+    box-shadow:0 1px 3px rgba(8,21,129,0.05);
+  }
+  .model-card.haiku{border-left-color:var(--teal);}
+  .model-card.sonnet{border-left-color:var(--blue);}
+  .model-card.step3{border-left-color:var(--purple);}
+  .model-card.step4{border-left-color:var(--navy-deep);}
+  .model-name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.06em;opacity:0.6;margin-bottom:2px;}
+  .model-identity{font-size:16.5px;font-weight:700;color:var(--navy-deep);margin:0 0 10px;}
+  .model-card p.model-desc{font-size:13.8px;margin:0 0 12px;opacity:0.85;}
+  .model-card .good-for{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.55;margin-bottom:6px;}
+  .model-card ul{margin:0;padding-left:18px;}
+  .model-card ul li{font-size:13.5px;margin-bottom:5px;opacity:0.9;}
+
+  .rule-of-thumb{
+    background:var(--paper-dim);border-radius:12px;padding:16px 20px;
+    font-size:14px;line-height:1.6;
+  }
+  .rule-of-thumb strong{color:var(--navy-deep);}
+
+  /* ---------- SKILL ASSET ---------- */
+  .skill-asset{
+    margin-top:24px;border:1px solid var(--line);border-radius:14px;
+    background:#fff;overflow:hidden;box-shadow:0 1px 3px rgba(8,21,129,0.05);
+  }
+  .skill-asset summary{
+    padding:16px 20px;cursor:pointer;list-style:none;
+    display:flex;align-items:center;gap:10px;
+    font-weight:700;color:var(--navy-deep);font-size:15px;
+  }
+  .skill-asset summary::-webkit-details-marker{display:none;}
+  .skill-asset summary::after{content:"+";margin-left:auto;opacity:0.5;font-size:18px;}
+  .skill-asset[open] summary::after{content:"–";}
+  .skill-asset-body{padding:0 20px 22px;}
+  .install-steps{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+  @media (max-width:640px){.install-steps{grid-template-columns:1fr;}}
+  .install-step{background:var(--paper);border-radius:10px;padding:14px 16px;}
+  .install-step h4{
+    font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--purple);
+    margin:0 0 8px;font-family:'JetBrains Mono',monospace;
+  }
+  .install-step ol{margin:0;padding-left:20px;font-size:13.5px;}
+  .install-step ol li{margin-bottom:5px;opacity:0.9;}
+  .code-wrap{position:relative;background:var(--navy-deep);border-radius:10px;overflow:hidden;}
+  .code-wrap pre{margin:0;padding:20px;overflow-x:auto;max-height:400px;overflow-y:auto;}
+  .code-wrap code{font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.6;color:#e8ebff;white-space:pre;}
+  .copy-btn{
+    position:absolute;top:10px;right:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.05em;
+    background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.25);
+    padding:6px 12px;border-radius:6px;cursor:pointer;
+  }
+  .copy-btn:hover{background:rgba(255,255,255,0.22);}
+
+  /* ---------- TRY THIS WEEK ---------- */
+  .try-band{
+    background:var(--navy-deep);
+    color:#fff;
+    padding:56px 24px;
+    text-align:center;
+  }
+  .try-inner{max-width:600px;margin:0 auto;}
+  .try-band .section-label{color:var(--teal);}
+  .try-band h2{color:#fff;}
+  .try-band p{font-size:16px;color:rgba(255,255,255,0.88);margin:0;}
+  .try-band .quote{font-size:19px;font-weight:600;margin:18px 0 22px;line-height:1.4;}
+  .week-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;
+    color:var(--teal);opacity:0.85;margin-top:18px;text-transform:uppercase;
+  }
+
+  footer{
+    text-align:center;padding:32px 24px 48px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--charcoal);opacity:0.5;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<div class="hero">
+  <div class="brand-row"><img src="data:image/png;base64,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" alt="Deltek"><a href="#release-notes" class="version-pill" id="version-link">v1.8 <span class="chevron">▾ release notes</span></a></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Deltek Product &amp; Technology · AI Adoption &amp; Enablement</div>
+    <h1>Prompt engineering is a skill. Like any skill, it gets better with practice.</h1>
+    <p>If it feels like other people are getting more out of AI than you are, it's probably not you. Most of us were never actually shown what makes a prompt work, we just started typing and hoped for the best. This page is here to help with that: clearer requests, fewer rounds of back-and-forth, better answers the first time, whether you're in Claude, ChatGPT, Gemini, or whatever comes next.</p>
+    <p>This page is a curated set of practices for getting more out of whatever you're working in. Not a rulebook, not specific to one tool. We pulled from Anthropic, OpenAI, Google, creators on LinkedIn and YouTube, and the open prompting community, then organized it by how much effort each habit takes and how much it actually improves your results.</p>
+    <a href="#quick-hits" class="hero-cta">Start with the quick hits →</a>
+  </div>
+</div>
+<div class="tear"></div>
+
+<nav class="mini-nav" id="mini-nav">
+  <div class="mini-nav-inner">
+    <a href="#quick-hits" class="nav-link active" data-target="quick-hits">Quick hits</a>
+    <a href="#net-positive" class="nav-link" data-target="net-positive">Why it works</a>
+    <a href="#good-better-best" class="nav-link" data-target="good-better-best">Showcase</a>
+    <a href="#crit" class="nav-link" data-target="crit">Framework</a>
+    <a href="#community" class="nav-link" data-target="community">Community</a>
+    <a href="#power-user" class="nav-link" data-target="power-user">Power users</a>
+    <a href="#playbook" class="nav-link" data-target="playbook">Playbook</a>
+    <a href="#deep-dive" class="nav-link" data-target="deep-dive">Go deeper</a>
+    <a href="#models" class="nav-link" data-target="models">Models</a>
+    <a href="#our-setup" class="nav-link" data-target="our-setup">Our setup</a>
+    <a href="#try-band" class="nav-link" data-target="try-band">This week</a>
+  </div>
+</nav>
+
+<div class="path-fork" id="path-fork">
+  <div class="path-fork-inner">
+    <a href="#quick-hits" class="path-card">
+      <span class="path-eyebrow">Start here</span>
+      <span class="path-label">New to prompting</span>
+      <span class="path-desc">Quick Hits: eight small habits, thirty seconds each.</span>
+    </a>
+    <a href="#power-user" class="path-card">
+      <span class="path-eyebrow">Skip ahead</span>
+      <span class="path-label">Already deep in Claude Code</span>
+      <span class="path-desc">Context, caching, and session hygiene, the stuff that actually matters at your usage.</span>
+    </a>
+  </div>
+</div>
+
+<section id="quick-hits">
+  <div class="section-label">30 seconds each</div>
+  <h2>Quick hits</h2>
+  <p class="section-intro">These hold true whether you're in Claude, ChatGPT, Gemini, or whatever comes next. You don't need to adopt all eight at once, even picking up one or two makes a real difference. Tagged below by the kind of difference each one makes.</p>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="speed">Speed</button>
+    <button class="filter-btn" data-filter="flow">Flow</button>
+    <button class="filter-btn" data-filter="clarity">Clarity</button>
+  </div>
+
+  <div class="bubble-grid">
+    <div class="bubble" data-cat="speed">
+      <span class="tag speed">Speed</span>
+      <h3>Start fresh for a new task</h3>
+      <p>Old context that doesn't relate to your current ask just adds noise for the model to wade through. A new chat is often faster and gives you a cleaner answer than dragging an old one along.</p>
+    </div>
+    <div class="bubble" data-cat="speed">
+      <span class="tag speed">Speed</span>
+      <h3>Use a reusable workspace for recurring work</h3>
+      <p>Most tools have some version of this: Projects, custom GPTs, Gems. Set it up once and every future ask starts from a cleaner baseline instead of a blank paste.</p>
+    </div>
+    <div class="bubble" data-cat="speed">
+      <span class="tag speed">Speed</span>
+      <h3>Match the model to the task</h3>
+      <p>Not every task needs the most capable model available. Lighter models are often faster too, save the heavy-duty option for the work that actually needs the extra horsepower.</p>
+    </div>
+    <div class="bubble" data-cat="flow">
+      <span class="tag flow">Flow</span>
+      <h3>Batch related questions</h3>
+      <p>If you have three related asks, send them in one message instead of three. Planning your conversation before you start cuts down on back-and-forth.</p>
+    </div>
+    <div class="bubble" data-cat="flow">
+      <span class="tag flow">Flow</span>
+      <h3>Refer back instead of repeating</h3>
+      <p>Most tools hold context within a conversation. Point back to something you already said rather than re-pasting it.</p>
+    </div>
+    <div class="bubble" data-cat="clarity">
+      <span class="tag clarity">Clarity</span>
+      <h3>Front-load your context</h3>
+      <p>Give the full picture, background, requirements, audience, in your first message. A slow reveal takes longer than a complete ask.</p>
+    </div>
+    <div class="bubble" data-cat="clarity">
+      <span class="tag clarity">Clarity</span>
+      <h3>Plan before you build</h3>
+      <p>Outline the approach first. Ask the model to think it through with you before asking it to produce the final thing.</p>
+    </div>
+    <div class="bubble" data-cat="clarity">
+      <span class="tag clarity">Clarity</span>
+      <h3>Review before you send</h3>
+      <p>A clear ask the first time beats three follow-up clarifications. Worth a quick second look before you hit enter, it's a small habit that saves a round trip.</p>
+    </div>
+  </div>
+</section>
+
+<section id="net-positive">
+  <div class="section-label">Not a tradeoff</div>
+  <h2>Efficient and better aren't opposites</h2>
+  <p class="section-intro">The habits that get you a better answer on the first try tend to be the same habits that keep the back-and-forth short. It makes sense once you think about it: being vague doesn't actually save you effort, it just moves that effort to a second message.</p>
+
+  <div class="pair-title">Asking for help with a deck</div>
+  <div class="compare-grid">
+    <div class="compare-card vague">
+      <span class="compare-label">Vague</span>
+      <p>"Can you help with this deck?"</p>
+    </div>
+    <div class="compare-card specific">
+      <span class="compare-label">Specific</span>
+      <p>"Ten-slide exec summary of Q3 pipeline for VPs of Sales. Direct tone, no more than 200 words a slide."</p>
+    </div>
+  </div>
+
+  <div class="pair-title">Debugging something</div>
+  <div class="compare-grid">
+    <div class="compare-card vague">
+      <span class="compare-label">Vague</span>
+      <p>"This isn't working, can you fix it?"</p>
+    </div>
+    <div class="compare-card specific">
+      <span class="compare-label">Specific</span>
+      <p>"Here's the error, the relevant file, and what I already tried. Something's blocking the async call."</p>
+    </div>
+  </div>
+
+  <div class="pair-title">Editing a draft</div>
+  <div class="compare-grid">
+    <div class="compare-card vague">
+      <span class="compare-label">Vague</span>
+      <p>"Make this better."</p>
+    </div>
+    <div class="compare-card specific">
+      <span class="compare-label">Specific</span>
+      <p>"Tighten this to 150 words. Keep both data points. Cut the intro paragraph."</p>
+    </div>
+  </div>
+
+  <p class="stat-line">Multiple model providers, including Anthropic and OpenAI, have published research pointing to the same thing: closing a long or complex prompt with a clear, direct ask improves response quality, in some published tests by as much as <span class="mono">30%</span>.</p>
+  <p class="net-takeaway">Being specific up front takes about the same effort as being vague. It just pays off sooner instead of later.</p>
+</section>
+
+<section id="good-better-best">
+  <div class="section-label">The training segment</div>
+  <h2>Good, better, best</h2>
+  <p class="section-intro">Same three tasks, three ways to ask. These read the same whether you're building a report, a deck, or a script, tap a task to open it up.</p>
+
+  <details class="task-block" open>
+    <summary>Summarizing a long thread or document</summary>
+    <div class="task-body">
+      <div class="tier-row good">
+        <span class="tier-label">Good</span>
+        <p class="prompt">"Summarize this."</p>
+        <p class="note">Gets a generic summary. Misses the specific decision you needed, so you follow up twice to get something usable.</p>
+      </div>
+      <div class="tier-row better">
+        <span class="tier-label">Better</span>
+        <p class="prompt">"Summarize this thread. I need the decisions made and who owns each follow-up."</p>
+        <p class="note">Targeted extraction. Usually done in one pass.</p>
+      </div>
+      <div class="tier-row best">
+        <span class="tier-label">Best</span>
+        <p class="prompt">"Summarize into 3 bullets: decision, owner, deadline. Flag anything still unresolved." Saved as a reusable template.</p>
+        <p class="note">Same single read, but the setup cost is paid once instead of every time you do this.</p>
+      </div>
+      <div class="token-math">The document only gets read once either way. What changes is how many times you re-explain what you needed. <strong>Good</strong> path: 1 doc read × 2–3 messages. <strong>Best</strong> path: 1 doc read × 1 message.</div>
+    </div>
+  </details>
+
+  <details class="task-block">
+    <summary>Troubleshooting something that isn't working</summary>
+    <div class="task-body">
+      <div class="tier-row good">
+        <span class="tier-label">Good</span>
+        <p class="prompt"><strong>Code:</strong> "This isn't working, can you fix it?"</p>
+        <p class="prompt"><strong>Spreadsheet:</strong> "This formula's broken, can you fix it?"</p>
+        <p class="note">Either way, the model asks clarifying questions, you paste more, then it guesses.</p>
+      </div>
+      <div class="tier-row better">
+        <span class="tier-label">Better</span>
+        <p class="prompt"><strong>Code:</strong> "Here's the code, the exact error, and what I already tried."</p>
+        <p class="prompt"><strong>Spreadsheet:</strong> "Here's the formula, what result I expected, and what it's returning instead."</p>
+        <p class="note">Usually solved in the first response.</p>
+      </div>
+      <div class="tier-row best">
+        <span class="tier-label">Best</span>
+        <p class="prompt"><strong>Code:</strong> "Here's the code, the exact error, what I tried, and what a fix should NOT break."</p>
+        <p class="prompt"><strong>Spreadsheet:</strong> "Here's the formula, the expected vs. actual result, and which other cells reference this one."</p>
+        <p class="note">Cuts the likely second round where the first fix breaks something else.</p>
+      </div>
+      <div class="token-math">Most of the extra back-and-forth here comes from guessing, not from the original ask. <strong>Good</strong> path often runs 3+ exchanges before landing on a real fix. <strong>Best</strong> path front-loads the constraints and usually lands in one.</div>
+    </div>
+  </details>
+
+  <details class="task-block">
+    <summary>Turning a rough draft into a polished one</summary>
+    <div class="task-body">
+      <div class="tier-row good">
+        <span class="tier-label">Good</span>
+        <p class="prompt">"Make this better."</p>
+        <p class="note">Ambiguous "better" produces a full rewrite you now have to evaluate and re-request.</p>
+      </div>
+      <div class="tier-row better">
+        <span class="tier-label">Better</span>
+        <p class="prompt">"Tighten this to 200 words. Keep the two data points. Cut the intro."</p>
+        <p class="note">Specific and targeted. Usually a single pass.</p>
+      </div>
+      <div class="tier-row best">
+        <span class="tier-label">Best</span>
+        <p class="prompt">"Tighten to 200 words, keep the two data points, cut the intro, match the tone of [reference]."</p>
+        <p class="note">Same pass, no follow-up "actually, can you match our usual tone" round.</p>
+      </div>
+      <div class="token-math">A full rewrite means going back through the entire draft. A targeted edit only touches what actually needed to change.</div>
+    </div>
+  </details>
+
+  <p class="gbb-flag">Illustrative estimates above. Shakun and Francesco can swap these for real numbers from actual usage once we lock the final three tasks for the session.</p>
+</section>
+
+<section id="crit">
+  <div class="section-label">Built in-house, not curated</div>
+  <h2>One framework, four questions</h2>
+  <p class="section-intro">Everything else on this page came from outside Deltek. This one's ours, built by our own AI Adoption &amp; Enablement team. Four questions, asked in order, that turn a vague idea into a prompt that's actually ready to use before you type a word to Claude.</p>
+
+  <div class="model-grid">
+    <div class="model-card haiku">
+      <div class="model-name">STEP 1 · CONTEXT</div>
+      <div class="model-identity">What's actually going on?</div>
+      <p class="model-desc">The background situation. What already exists, what constraints or history matter, what Claude needs to know before it can actually help.</p>
+    </div>
+    <div class="model-card sonnet">
+      <div class="model-name">STEP 2 · ROLE</div>
+      <div class="model-identity">Who should Claude be for this?</div>
+      <p class="model-desc">A senior engineer, a skeptical editor, a specific kind of expert. "No special role needed" is a perfectly good answer too.</p>
+    </div>
+    <div class="model-card step3">
+      <div class="model-name">STEP 3 · INTERVIEW</div>
+      <div class="model-identity">The step most people skip</div>
+      <p class="model-desc">Before you ask for the deliverable, ask yourself what a smart collaborator would ask you first. Surface the assumptions and edge cases now, not three messages into the conversation.</p>
+    </div>
+    <div class="model-card step4">
+      <div class="model-name">STEP 4 · TASK</div>
+      <div class="model-identity">The actual deliverable</div>
+      <p class="model-desc">What exactly should come out the other end, in what format, and what does "done well" actually look like.</p>
+    </div>
+  </div>
+
+  <div class="rule-of-thumb">
+    This is really just a more structured version of "front-load your context" and "plan before you build" from earlier on this page. No special tool required, just walk through the four questions yourself before writing anything long or important.
+  </div>
+
+  <details class="skill-asset">
+    <summary>Get the actual skill file →</summary>
+    <div class="skill-asset-body">
+      <p style="font-size:13.5px;opacity:0.8;margin:0 0 16px;">This is the real file. Copy it and add it to your own skill library, works in Claude.ai, Claude Desktop, and Claude Code.</p>
+
+      <div class="install-steps">
+        <div class="install-step">
+          <h4>Claude.ai or Claude Desktop chat</h4>
+          <ol>
+            <li>Copy the file below into a text file named <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-dim);padding:1px 5px;border-radius:4px;">SKILL.md</code></li>
+            <li>Put that file in a folder named <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-dim);padding:1px 5px;border-radius:4px;">crit-super-prompt</code>, then zip the folder</li>
+            <li>In Claude, go to Settings → Customize → Skills → the "+" button → "+ Create skill", and upload the zip</li>
+            <li>Code execution needs to be on in Settings → Capabilities for this to work. Toggle the skill on once it's uploaded</li>
+          </ol>
+        </div>
+        <div class="install-step">
+          <h4>Claude Code</h4>
+          <ol>
+            <li>Copy the file below</li>
+            <li>Run: <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-dim);padding:1px 5px;border-radius:4px;">mkdir -p ~/.claude/skills/crit-super-prompt</code></li>
+            <li>Save the content as <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-dim);padding:1px 5px;border-radius:4px;">~/.claude/skills/crit-super-prompt/SKILL.md</code></li>
+            <li>Done, Claude Code picks it up automatically. No restart needed</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="code-wrap">
+        <button class="copy-btn" id="copy-crit-btn" onclick="copyCritSkill()">Copy</button>
+        <pre><code id="crit-skill-code">---
+name: crit-super-prompt
+description: Builds a detailed "super prompt" for another Claude conversation (or any LLM) using the CRIT framework (Context, Role, Interview, Task). Use this whenever the user wants to "write a detailed prompt," "build a super prompt," "create a prompt for Claude," or mentions the CRIT framework by name. This skill interviews the user one CRIT category at a time, drafts the full prompt, then automatically runs it through the prompt-optimizer skill before handing over the final version. Make sure to trigger this any time the user is clearly trying to prepare a prompt to send elsewhere rather than asking Claude to do the task directly in this conversation.
+---
+
+# CRIT Super Prompt Builder
+
+You are helping the user build a detailed, ready-to-send prompt using the CRIT framework: **C**ontext, **R**ole, **I**nterview, **T**ask. The output is a prompt for the user to paste into another Claude conversation (or any LLM) — not an answer to the underlying task itself.
+
+## The four categories
+
+- **Context** — the background situation. What's going on, what already exists, what constraints or history matter, what materials the target Claude will need.
+- **Role** — who should the target Claude be for this task. What expertise, perspective, or persona will produce the best output. If no special role is needed, that's a valid answer too.
+- **Interview** — the questions a smart collaborator would ask before starting. This surfaces hidden assumptions and edge cases *now*, so the eventual Claude doesn't have to guess or ask mid-task.
+- **Task** — the actual deliverable. What exactly should get produced, in what format, and what does "done well" look like.
+
+## Process
+
+**Step 1 — Ask one category at a time, conversationally.**
+
+Go in order: Context, then Role, then Interview, then Task. For each category:
+- Ask a short, direct question in your own words (don't just recite the definition above).
+- Wait for the user's answer before moving to the next category.
+- If an answer is thin or ambiguous in a way that would change the final prompt, ask one quick follow-up before moving on. Don't interrogate — one follow-up max per category.
+- For **Interview** specifically: don't just ask "what questions do you have." Prompt the user to think like they're being interviewed — surface the assumptions, edge cases, or unstated constraints someone would need to know. If the user is stuck, offer 2-3 candidate questions based on what they've said in Context/Role and ask them to answer those.
+
+Keep each question tight. No preamble, no re-explaining the framework unless asked.
+
+**Step 2 — Draft the super prompt.**
+
+Once all four categories are answered, assemble them into a single, well-structured prompt using this shape (adapt headers/wording to fit, but keep the four-part structure clear):
+
+## Context
+[synthesized from the user's answer — don't just paste it verbatim, tighten it]
+
+## Role
+[the persona/expertise framing, stated as an instruction — e.g., "Act as a senior X" — or omitted if the user said no role is needed]
+
+## Task
+[the deliverable, stated first and imperatively, with format and success criteria as a short list]
+
+## Things to get right
+[the answers from the Interview step, converted into constraints or clarifications the target Claude should already know — not phrased as open questions anymore, since they've been answered]
+
+Don't just concatenate the user's raw answers — write it the way a well-structured prompt should read, task-first, constraints as a list, no narrative padding.
+
+**Step 3 — Run it through prompt-optimizer automatically.**
+
+Immediately after drafting, apply the prompt-optimizer skill's process to your own draft, in the same turn — don't wait for the user to ask. Follow its Steps 1-5 (extract core spec, flag fluff, rewrite, self-check, report). Skip Fiscal Mode unless the user's Context/Task answers included pasted bulk documents, repeated static context, or an obvious model mismatch — if so, run Fiscal Mode too and report those flags.
+
+**Step 4 — Deliver.**
+
+Output, in order:
+1. The final optimized super prompt in a code block, ready to copy-paste.
+2. A brief "what changed in optimization" note, keep this short, this isn't the main deliverable.
+
+Don't add extra commentary, don't ask if they want revisions unless something in their answers was genuinely ambiguous — if it's ambiguous, flag the specific ambiguity inline rather than opening a generic "let me know if you'd like changes."
+
+## Notes
+
+- If the user already gave you Context/Role/Interview/Task info earlier in the conversation, don't re-ask — confirm what you've inferred in one line per category and move straight to drafting.
+- If the user wants to skip a category (e.g., "no role needed"), accept that and move on — don't push back.
+- This skill produces a prompt for later use, not an in-conversation answer. If the user's request is actually just "do this task for me," that's not this skill — just do the task.</code></pre>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section id="community">
+  <div class="section-label">Different formats, same ideas</div>
+  <h2>From the community</h2>
+  <p class="section-intro">Not everyone wants to read documentation, and that's completely fair. These cover the same ground in video, story, and discussion form instead.</p>
+
+  <div class="community-list">
+    <div class="community-item">
+      <div class="ci-main">
+        <span class="format-tag watch">Watch</span>
+        <h3>Master the perfect ChatGPT prompt formula (8 minutes)</h3>
+        <div class="desc">A practical, down-to-earth walkthrough for anyone using AI as part of a regular workday. Six components, explained with real work examples.</div>
+        <div class="source">Jeff Su · YouTube</div>
+      </div>
+      <a class="go" href="https://www.youtube.com/watch?v=jC4v5AS4RIM" target="_blank" rel="noopener">Watch →</a>
+    </div>
+    <div class="community-item">
+      <div class="ci-main">
+        <span class="format-tag read">Read</span>
+        <h3>Working with AI: two paths to prompting</h3>
+        <div class="desc">Widely shared on LinkedIn. The Wharton professor's take on why most people don't need prompt-engineering tricks, just better context and an actual conversation.</div>
+        <div class="source">Ethan Mollick · One Useful Thing</div>
+      </div>
+      <a class="go" href="https://www.oneusefulthing.org/p/working-with-ai-two-paths-to-prompting" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="community-item">
+      <div class="ci-main">
+        <span class="format-tag read">Read</span>
+        <h3>Five proven prompt engineering techniques</h3>
+        <div class="desc">A little more structured than Mollick's piece, still approachable, without going fully technical. A good next step if you want more than the basics.</div>
+        <div class="source">Lenny's Newsletter</div>
+      </div>
+      <a class="go" href="https://www.lennysnewsletter.com/p/five-proven-prompt-engineering-techniques" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="community-item">
+      <div class="ci-main">
+        <span class="format-tag discuss">Discuss</span>
+        <h3>r/PromptEngineering</h3>
+        <div class="desc">Where people troubleshoot real prompts in public. Good for seeing what actually works when something isn't, across every major model. No account needed to browse.</div>
+        <div class="source">Reddit community</div>
+      </div>
+      <a class="go" href="https://www.reddit.com/r/PromptEngineering/" target="_blank" rel="noopener">Browse →</a>
+    </div>
+    <div class="community-item">
+      <div class="ci-main">
+        <span class="format-tag discuss">Discuss</span>
+        <h3>r/ClaudeAI</h3>
+        <div class="desc">Same idea, specific to the tool most of us are using day to day. Worth a skim before you assume something can't be done. Read-only, no login required.</div>
+        <div class="source">Reddit community</div>
+      </div>
+      <a class="go" href="https://www.reddit.com/r/ClaudeAI/" target="_blank" rel="noopener">Browse →</a>
+    </div>
+  </div>
+</section>
+
+<section id="power-user">
+  <div class="section-label">A different kind of workflow</div>
+  <h2>For people already living in the terminal</h2>
+  <p class="section-intro">If you're running Claude Code all day, the chat-window advice above isn't really your problem. This is the version that is.</p>
+
+  <div class="playbook-list">
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Context is the constraint, not message count</h3>
+        <p>What you keep in the context window matters more than how any single prompt is phrased. A cluttered context degrades every response that follows it, no matter how good that one prompt was.</p>
+        <div class="pb-source">Concept · Anthropic Engineering</div>
+      </div>
+      <a class="pb-link" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>A CLAUDE.md does for a repo what a Project does for a chat</h3>
+        <p>Set the conventions, constraints, and architecture notes once. Every session starts from that baseline instead of you re-explaining the codebase from scratch.</p>
+        <div class="pb-source">Claude Code Docs</div>
+      </div>
+      <a class="pb-link" href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Prompt caching is doing more than you think</h3>
+        <p>Repeated system prompts and long, stable context get cached automatically in most setups. Ordering a prompt so stable content comes first can be the difference between a cache hit and a full re-read.</p>
+        <div class="pb-source">Claude Code Docs</div>
+      </div>
+      <a class="pb-link" href="https://code.claude.com/docs/en/prompt-caching" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Session hygiene and model/effort selection</h3>
+        <p>Same idea as "start fresh for a new task" above, just with higher stakes when your sessions run for hours instead of minutes.</p>
+        <div class="pb-source">Claude Code Power User Tips</div>
+      </div>
+      <a class="pb-link" href="https://support.claude.com/en/articles/14554000-claude-code-power-user-tips" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Opus is here, even though it isn't in Desktop chat</h3>
+        <p>Claude Code has a fourth option beyond the three in the chat app: Opus 4.8. It trades speed for deeper reasoning, worth it for genuinely hard, multi-step work. The built-in <code>opusplan</code> mode uses Opus for planning and architecture decisions, then automatically switches to Sonnet for the actual execution, Opus's judgment without paying Opus rates on every line.</p>
+        <div class="pb-source">Claude Code Docs</div>
+      </div>
+      <a class="pb-link" href="https://code.claude.com/docs/en/model-config" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>The CRIT framework, automated</h3>
+        <p>The four-question framework from earlier on this page (Context, Role, Interview, Task), packaged as an installable skill. It interviews you through each step, then runs the draft through an automatic optimization pass before handing you the finished prompt. The actual file is available to copy in the "One framework, four questions" section above.</p>
+        <div class="pb-source">Built by AI Adoption &amp; Enablement</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="playbook">
+  <div class="section-label">Ten minutes, once</div>
+  <h2>The core playbook</h2>
+  <p class="section-intro">These are the pages behind the quick hits, pulled from across the industry so this doesn't read like a Claude manual. Worth reading once, not because they're long, but because they explain the why.</p>
+
+  <div class="playbook-list">
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Prompt engineering best practices for ChatGPT</h3>
+        <p>OpenAI's version of the same core idea: be specific, provide examples, break big asks into steps.</p>
+        <div class="pb-source">OpenAI · Help Center</div>
+      </div>
+      <a class="pb-link" href="https://help.openai.com/en/articles/10032626-prompt-engineering-best-practices-for-chatgpt" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Prompt Engineering whitepaper</h3>
+        <p>Google's widely-cited, plain-language guide to what actually changes model output. Long, but the early sections are worth it regardless of what you use.</p>
+        <div class="pb-source">Google · via Kaggle</div>
+      </div>
+      <a class="pb-link" href="https://www.kaggle.com/whitepaper-prompt-engineering" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Prompting best practices</h3>
+        <p>Anthropic's living reference on clarity, structure, and getting a better answer without a longer conversation. The one most directly relevant to what we run internally.</p>
+        <div class="pb-source">Anthropic · Claude Platform Docs</div>
+      </div>
+      <a class="pb-link" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="pb-card">
+      <div class="pb-main">
+        <h3>Prompt Engineering Guide</h3>
+        <p>A vendor-neutral, community-maintained reference. Good for the techniques that hold up everywhere, not just in one tool.</p>
+        <div class="pb-source">DAIR.AI · promptingguide.ai</div>
+      </div>
+      <a class="pb-link" href="https://www.promptingguide.ai/" target="_blank" rel="noopener">Read →</a>
+    </div>
+  </div>
+</section>
+
+<section id="deep-dive">
+  <div class="section-label">When you want more</div>
+  <h2>Go deeper</h2>
+  <p class="section-intro">No net-new content here either, just the best of what already exists for people who want to go further.</p>
+
+  <div class="deep-list">
+    <div class="deep-item">
+      <div>
+        <h3>Prompt Engineering Guide (full repo)</h3>
+        <div class="desc">The technical version of the guide above: techniques, papers, and notebooks, model-agnostic throughout.</div>
+      </div>
+      <a href="https://github.com/dair-ai/Prompt-Engineering-Guide" target="_blank" rel="noopener">GitHub →</a>
+    </div>
+    <div class="deep-item">
+      <div>
+        <h3>Effective context engineering for AI agents</h3>
+        <div class="desc">What belongs in context and what doesn't. Useful for anyone building longer, multi-step workflows in any tool.</div>
+      </div>
+      <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="deep-item">
+      <div>
+        <h3>Best practices for prompt engineering with the OpenAI API</h3>
+        <div class="desc">A more technical look at parameters and structure. Concepts carry over even if you never touch the API.</div>
+      </div>
+      <a href="https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api" target="_blank" rel="noopener">Read →</a>
+    </div>
+    <div class="deep-item">
+      <div>
+        <h3>Interactive prompt engineering tutorial</h3>
+        <div class="desc">Nine chapters, hands-on, with an answer key. The most thorough self-paced option available.</div>
+      </div>
+      <a href="https://github.com/anthropics/prompt-eng-interactive-tutorial" target="_blank" rel="noopener">GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<section id="models">
+  <div class="section-label">Specific to Claude</div>
+  <h2>Which model, when</h2>
+  <p class="section-intro">This is the "match the model to the task" quick hit from earlier, expanded. As of today, our Claude Desktop gives us three models to pick from: Haiku 4.5 and two Sonnet versions. Picking the right one isn't about being cheap, it's about matching the tool to the job in front of you. If you're working in Claude Code instead of the chat app, there's a fourth option, covered in the power users section below. (If any of this changes, the version note at the bottom of this page will say so.)</p>
+
+  <div class="model-grid">
+    <div class="model-card haiku">
+      <div class="model-name">HAIKU 4.5</div>
+      <div class="model-identity">The quick one</div>
+      <p class="model-desc">Built for speed. Reach for it when the task is simple and you want the answer fast, not when you need deep analysis.</p>
+      <div class="good-for">Good for</div>
+      <ul>
+        <li>Quick email or message drafts</li>
+        <li>Reformatting or cleaning up a document</li>
+        <li>Simple lookups and yes/no questions</li>
+        <li>Sorting or triaging a big batch of items</li>
+      </ul>
+    </div>
+    <div class="model-card sonnet">
+      <div class="model-name">SONNET</div>
+      <div class="model-identity">The everyday one</div>
+      <p class="model-desc">The default for a reason. Fast enough to feel interactive, capable enough for real work. Most tasks belong here, whichever version you're on.</p>
+      <div class="good-for">Good for</div>
+      <ul>
+        <li>Writing and editing reports, emails, decks</li>
+        <li>Everyday coding: reviews, small features, debugging</li>
+        <li>Summarizing a document or meeting notes</li>
+        <li>Most day-to-day research and analysis</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pair-title">You'll see two Sonnet options, here's the difference</div>
+  <div class="compare-grid">
+    <div class="compare-card vague">
+      <span class="compare-label">Sonnet 4.6</span>
+      <p style="font-style:normal;">The previous version. Still solid, still available. Fine to keep using if that's what a saved workflow already points to.</p>
+    </div>
+    <div class="compare-card specific">
+      <span class="compare-label">Sonnet 5</span>
+      <p style="font-style:normal;">The newer version of the same tier: more capable on multi-step and reasoning-heavy work, and generally the stronger everyday pick.</p>
+    </div>
+  </div>
+  <p class="net-takeaway" style="margin-top:14px;">Default to Sonnet 5 for anything new. There's little reason to reach for 4.6 on a fresh task.</p>
+
+  <div class="rule-of-thumb" style="margin-top:26px;">
+    A rule of thumb worth keeping: <strong>start on Sonnet 5</strong> for real work. If the task is genuinely simple and repetitive, drop down to <strong>Haiku</strong> instead. This is specific to what we currently have access to in Claude, if you're working in another tool day to day, look for its equivalent tiers.
+  </div>
+</section>
+
+<section id="our-setup">
+  <div class="setup-box">
+    <div class="section-label">The fine print for what we actually run</div>
+    <p class="lede">Everything above applies no matter what you're using. These last few are specific to Claude, since that's the tool provisioned across P&T today.</p>
+    <div class="setup-links">
+      <a href="https://support.claude.com/en/articles/9797557-usage-limit-best-practices" target="_blank" rel="noopener">Usage limit best practices
+        <span>How caching and conversation habits affect your actual allocation</span>
+      </a>
+      <a href="https://support.claude.com/en/articles/9517075-what-are-projects" target="_blank" rel="noopener">What are Projects?
+        <span>The reusable workspace mentioned in the quick hits above, in Claude specifically</span>
+      </a>
+      <a href="https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work" target="_blank" rel="noopener">How usage and length limits work
+        <span>The mechanics behind the plan change: what counts, what's cached, what doesn't</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="try-band" id="try-band" style="scroll-margin-top:64px;">
+  <div class="try-inner">
+    <div class="section-label">One thing to try this week</div>
+    <h2 id="try-title">Plan the ask before you open the chat</h2>
+    <p class="quote" id="try-quote">Before your next AI session, write down what you actually need in one sentence. Then start typing.</p>
+    <p id="try-sub">That single habit fixes more usage than any setting you could change.</p>
+    <div class="week-tag" id="week-tag"></div>
+  </div>
+</div>
+
+<div class="version-footer">
+  <details class="release-accordion" id="release-notes">
+    <summary><span class="version-badge">v1.8</span> Release notes <span style="margin-left:auto;opacity:.5;">tap to expand</span></summary>
+    <div class="release-body">
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge">v1.8</span><span class="version-current-flag">Current</span></div>
+        <h4>Update</h4>
+        <ul>
+          <li>The CRIT skill file is now actually on the page, an expandable "Get the actual skill file" block with the real SKILL.md content and a one-click copy button, not just a description of it.</li>
+          <li>Added install steps for both surfaces: Claude.ai/Desktop (Settings → Customize → Skills → upload as a zip, requires code execution on) and Claude Code (drop it in <code>~/.claude/skills/</code>, no restart needed).</li>
+          <li>Updated the power-user card to point at this new on-page asset instead of "ask the team", it's self-serve now.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.7</span></div>
+        <h4>New section</h4>
+        <ul>
+          <li>Added "One framework, four questions": the CRIT method (Context, Role, Interview, Task) as a manual technique anyone can use, the first piece of content on this page that's actually homegrown rather than curated.</li>
+          <li>Added a pointer in the power-user section to the automated Claude Code version of CRIT, which interviews you through each step and runs an optimization pass automatically.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.6</span></div>
+        <h4>Update</h4>
+        <ul>
+          <li>Confirmed: Opus 4.8 is available in Claude Code, even though it isn't in Claude Desktop chat. Added it to the power-user section rather than the main model guide, since it's specific to that surface, along with a note on <code>opusplan</code> mode (Opus plans, Sonnet executes).</li>
+          <li>Cross-linked the two sections so Claude Code users know to keep reading past the main three-model guide.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.5</span></div>
+        <h4>Correction</h4>
+        <ul>
+          <li>The v1.4 model guide listed Opus 4.8 and Fable 5, neither is actually available in our Claude Desktop. Corrected to reflect what we actually have: Haiku 4.5, Sonnet 4.6, and Sonnet 5.</li>
+          <li>Added a short explainer on the two Sonnet versions, since that's a distinction our old guide didn't need to make. Default guidance: use Sonnet 5.</li>
+          <li>Noted on the page that this list reflects current access and may change, check back here if it does.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.4</span></div>
+        <h4>New section</h4>
+        <ul>
+          <li>Added "Which model, when": a plain-language guide to Haiku 4.5, Sonnet 5, Opus 4.8, and Fable 5, what each is actually built for, with concrete example tasks per tier and a one-line rule of thumb.</li>
+          <li>Placed it as its own Claude-specific section (alongside "Our setup") rather than folding it into the universal Quick Hits, since model names and tiers don't carry over to other tools.</li>
+          <li>Added a visual fast↔deep spectrum so the four tiers read at a glance before anyone reads the detail.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.3</span></div>
+        <h4>Tone &amp; copy pass</h4>
+        <ul>
+          <li>Reviewed the whole page for language that read as preachy, gotcha, or "punchy AI text", the "isn't X, it's Y" contrast-flourish pattern that showed up repeatedly, and reworded it into plainer, warmer sentences.</li>
+          <li>Rewrote the hero to lead with empathy: acknowledges that not knowing these habits yet isn't a personal failing, most people were never shown any of this.</li>
+          <li>Removed "us vs. them" framing that quietly separated "technical people" from everyone else (community section, Jeff Su and Lenny's blurbs).</li>
+          <li>Softened a couple of lines that read as scolding ("read your message once before hitting enter" → a gentler nudge).</li>
+          <li>Caught and fixed leftover cost-framing language in two of the rotating weekly tips that had survived the v1.1 messaging reframe.</li>
+          <li>Added explicit permission in the Quick Hits intro: you don't need to adopt all eight at once.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.2</span></div>
+        <h4>UX &amp; accessibility pass</h4>
+        <ul>
+          <li>Added a "Choose your path" fork right under the hero: New to prompting vs. already deep in Claude Code, so neither audience has to scroll past content that isn't for them.</li>
+          <li>Added a dedicated "For people already living in the terminal" section: context management, CLAUDE.md, prompt caching, and session hygiene for Claude Code power users, an audience the page previously didn't address at all.</li>
+          <li>Fixed the debugging card in Good/Better/Best, it was code-only. Now shows a parallel spreadsheet/formula example at every tier so it isn't just for developers.</li>
+          <li>Added icons to the Speed/Flow/Clarity and Watch/Read/Discuss tags so they read faster than text alone.</li>
+          <li>Added visible focus states across every link, button, and pill for keyboard navigation.</li>
+          <li>Added a thin scroll-progress bar and an edge-fade cue on the mobile nav so it's obvious the nav scrolls.</li>
+          <li>Added a primary CTA button in the hero ("Start with the quick hits").</li>
+          <li>Softened the Reddit links with a plain-language note that no account is needed to browse.</li>
+          <li>Gave every card resting elevation instead of shadow-on-hover only, and bumped contrast on the muted/small text throughout for accessibility.</li>
+          <li>Spelled out "P&amp;T" as "Deltek Product &amp; Technology" in the eyebrow and footer so the page reads clearly outside the org too.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.1</span></div>
+        <h4>Messaging</h4>
+        <ul>
+          <li>Reframed the page's core message: leads with prompting as a learnable skill that improves your own output, not with cost or usage. Token and message efficiency still happen, they're just the byproduct, not the pitch.</li>
+          <li>Renamed the Quick Hits tags (Tokens/Messages → Speed/Flow) to match that outcome-first framing.</li>
+        </ul>
+        <h4>Content</h4>
+        <ul>
+          <li>Added "From the community": a curated mix of YouTube, LinkedIn/Substack, and Reddit content for people who'd rather watch or skim a discussion than read documentation.</li>
+        </ul>
+        <h4>Navigation</h4>
+        <ul>
+          <li>The version number in the hero now links straight to these release notes and opens them automatically.</li>
+        </ul>
+      </div>
+
+      <div class="version-entry">
+        <div class="version-entry-head"><span class="version-badge dim">v1.0</span></div>
+        <h4>Structure</h4>
+        <ul>
+          <li>Hero framing the shift to usage-based pricing as a stewardship story, not a restriction.</li>
+          <li>Quick Hits: eight bite-sized habits, filterable by what they save.</li>
+          <li>"Efficient and better aren't opposites": vague-vs-specific comparisons across a deck, a debug, and an edit, plus the research behind closing prompts with a clear ask.</li>
+          <li>"Good, better, best" showcase: three tasks that read the same across technical and non-technical roles (summarizing, troubleshooting, refining), each shown at three prompt tiers with the token logic underneath.</li>
+          <li>Core playbook: cross-platform sourcing, OpenAI, Google, Anthropic, and the vendor-neutral DAIR.AI guide, side by side.</li>
+          <li>Go Deeper: longer-tail resources for people who want the full technical version.</li>
+          <li>"Our setup": Claude-specific mechanics (usage limits, Projects, how limits work) isolated in their own box so the rest of the page reads as universal, not tool-specific.</li>
+          <li>"Try this week": a single takeaway that rotates automatically every ISO week across six pre-written options.</li>
+        </ul>
+        <h4>Navigation</h4>
+        <ul>
+          <li>Sticky mini nav below the hero, jumps to any section and highlights the one currently in view as you scroll.</li>
+        </ul>
+        <h4>Brand &amp; polish</h4>
+        <ul>
+          <li>Deltek logo pulled from Brandfolder.</li>
+          <li>Forced light color-scheme so the page doesn't invert under phone or app dark mode.</li>
+        </ul>
+        <h4>Sourcing</h4>
+        <ul>
+          <li>Broadened from Anthropic-only documentation to cross-platform best practices, so the page applies no matter which model someone is using.</li>
+        </ul>
+      </div>
+
+    </div>
+  </details>
+</div>
+
+<footer>Curated for Deltek Product &amp; Technology · maintained by AI Adoption &amp; Enablement</footer>
+
+<script>
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.bubble').forEach(bubble => {
+        bubble.hidden = filter !== 'all' && bubble.dataset.cat !== filter;
+      });
+    });
+  });
+
+  // Rotating "try this week" takeaway, changes automatically every ISO week
+  const weeklyTips = [
+    {
+      title: "Plan the ask before you open the chat",
+      quote: "Before your next AI session, write down what you actually need in one sentence. Then start typing.",
+      sub: "That single habit makes more difference than any setting you could change."
+    },
+    {
+      title: "Give the full picture on the first try",
+      quote: "Include the background, the constraints, and the format you want, all in your opening message.",
+      sub: "One complete ask usually beats three follow-up clarifications."
+    },
+    {
+      title: "Reuse instead of re-explaining",
+      quote: "If you've set context once this week, project instructions, a style guide, a brief, point back to it instead of retyping it.",
+      sub: "Repetition is one of the easiest habits to fix, and one of the most common."
+    },
+    {
+      title: "Right-size the model to the task",
+      quote: "Before you default to the biggest model available, ask whether this particular task actually needs it.",
+      sub: "Save the heavyweight option for the work that earns it."
+    },
+    {
+      title: "End with a clear, direct ask",
+      quote: "If your prompt runs long, close it with one plain sentence stating exactly what you want back.",
+      sub: "It's a small habit with an outsized effect on answer quality."
+    },
+    {
+      title: "Batch it before you send it",
+      quote: "Look at your open questions for the day. If two or three belong together, send them together.",
+      sub: "Fewer, fuller messages beat a long thread of small ones."
+    }
+  ];
+
+  function isoWeek(d){
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  }
+
+  const week = isoWeek(new Date());
+  const tip = weeklyTips[week % weeklyTips.length];
+  document.getElementById('try-title').textContent = tip.title;
+  document.getElementById('try-quote').textContent = tip.quote;
+  document.getElementById('try-sub').textContent = tip.sub;
+  document.getElementById('week-tag').textContent = 'Week ' + week + ' pick';
+
+  // Copy the CRIT skill file to clipboard
+  function copyCritSkill(){
+    const codeEl = document.getElementById('crit-skill-code');
+    const btn = document.getElementById('copy-crit-btn');
+    if(!codeEl || !btn) return;
+    navigator.clipboard.writeText(codeEl.textContent).then(() => {
+      const original = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => { btn.textContent = original; }, 2000);
+    }).catch(() => {
+      btn.textContent = 'Select & copy manually';
+    });
+  }
+
+  // Mini nav scrollspy
+  const navLinks = document.querySelectorAll('.nav-link');
+  const trackedIds = ['quick-hits','net-positive','good-better-best','crit','community','power-user','playbook','deep-dive','models','our-setup','try-band'];
+  const trackedEls = trackedIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  const setActive = (id) => {
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.target === id));
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        setActive(entry.target.id);
+      }
+    });
+  }, { rootMargin: '-72px 0px -70% 0px', threshold: 0 });
+
+  trackedEls.forEach(el => observer.observe(el));
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => setActive(link.dataset.target));
+  });
+
+  // Version pill: open the release notes accordion, then let the anchor jump scroll to it
+  const versionLink = document.getElementById('version-link');
+  const releaseNotes = document.getElementById('release-notes');
+  if(versionLink && releaseNotes){
+    versionLink.addEventListener('click', () => {
+      releaseNotes.open = true;
+    });
+  }
+
+  // Scroll progress bar
+  const progressBar = document.getElementById('scroll-progress');
+  function updateProgress(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    if(progressBar) progressBar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+</script>
+
+</body>
+</html>
